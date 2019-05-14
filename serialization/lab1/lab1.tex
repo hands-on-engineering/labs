@@ -6,11 +6,11 @@
 \usepackage{caption}
 \usepackage{microtype}
 \usepackage{listings}
-\usepackage{xcolor}
+\usepackage{xcolor-solarized}
 
-\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolo{dkgreen}{rgb}{0,0.6,0}
 \definecolor{gray}{rgb}{0.5,0.5,0.5}
-\definecolor{mauve}{rgb}{0.58,0,0.82}
+\definecolor{mauv}{rgb}{0.58,0,0.82}
 
 \lstset{frame=tb,
     language=Java,
@@ -31,6 +31,8 @@
 
 \input{yaml-listing-language.tex}
 \input{json-listing-language.tex}
+\usepackage{protobuf/lang}  % include language definition for protobuf
+\usepackage{protobuf/style} % include custom style for proto declarations.
 
 \graphicspath{ {./images/} }
 
@@ -48,14 +50,17 @@
 \section{History}
 \input{sections/history}
 
+\section{Terminology and Background}
+This section covers some basic IO terminology which you may find useful as you proceed through labs where you will implement serialization libraries on your own.
+
 \subsection{Streams}
+\input{sections/streams}
+
 \subsection{Computer Files}
+\input{sections/files}
 
 \section{Serialization in Microcontrollers}
-\subsection{Constraints}
-\subsection{Libraries}
-\subsubsection{ArduinoJson}
-\subsubsection{Nanopb}
+\input{sections/microcontrollers}
 
 \bibliographystyle{IEEEtran}
 \bibliography{references}

@@ -3,7 +3,12 @@ In the 1990s, Extensible Markup Language (XML) was developed by the W3C as a fil
 
 Later, Javascript Object Notation (JSON) and YAML were pushed as light-weight alternatives to XML. JSON is often used to send data back and forth between web clients and servers, while YAML has become popular for configuration files. Since YAML 1.2, YAML is fully compatible with JSON as an official subset. \cite{ben-kiki_evans_net_2009}. 
 
+In 2001, Google began work on Protocol Buffers (Protobuf). Google describes Protobuf as a "language-neutral, platform-neutral, extensible mechanism for serializing structured data – think XML, but smaller, faster, and simpler" \cite{google_protobuf}. Protobuf is the best of both the human readable and machine parsable worlds. Protobuf "messages" are defined in the proto language and are easy to read; data serialized using these messages are written extremely efficiently in binary. We will investigate Protobuf in more depth in a later lab, so don't worry if the concepts don't seem to click right now.
+
+It is worth noting that many popular languages such as C, C++, Java and Ruby provide methods to serialize and deserialize objects into binary streams. 
+
 
 \lstinputlisting[language=XML, caption=Sample XML document \cite{xml_tutorial}]{code/sample-xml.xml}
 \lstinputlisting[language=yaml, caption=Sample YAML document \cite{yaml_json_comparison}]{code/sample-yaml.yaml}
-\lstinputlisting[language=json, caption=Sample JSON document \cite{yaml_json_comparison}]{code/sample-yaml.yaml}
+\lstinputlisting[language=json, caption=Sample JSON document \cite{yaml_json_comparison}]{code/sample-json.json}
+\lstinputlisting[language=protobuf2, caption=Sample Proto document \cite{google_protobuf}]{code/sample-proto.proto}

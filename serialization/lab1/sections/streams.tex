@@ -1,0 +1,5 @@
+Streams are a useful abstraction for handling incoming or outgoing data (or both). A stream abstracts a sequence of objects which may not all be available at any given moment. A common analogy is that streams are like conveyor belts which can either deliver objects towards or away from you; you can either place objects onto the belt or take objects off it \cite{so_streams}.
+
+A use of streams you may be familiar with is the \texttt{sed} (stream editor) utility in Unix. The utility can process files line-by-line without ever loading the entire file at once. Streams are also the abstraction used to support network sockets. 
+
+Understanding what streams are is important as most serialization techniques yield a binary stream representing the serialized object. 

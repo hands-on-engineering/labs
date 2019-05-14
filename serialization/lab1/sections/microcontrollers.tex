@@ -1,0 +1,12 @@
+In the next labs we will focus on importing and using two serialization frameworks on an Arduino Nano. We will pipe our stream output into a file using the OpenLog, and will later access this file on our computers and deserialize the written data. Here, we will investigate what factors must be considered when working on a microcontroller. 
+
+\subsection{Constraints}
+An Arduino Nano has 32 KB of flash memory, of which 2 KB are used by the bootloader. There are a maximum of 30720 bytes left for your program.  It's important to realize that going past $\approx 70$\% of the allocated memory will lead to a warning stating \texttt{Low memory available, stability problems may occur}. 
+
+We will try to be careful when choosing a library so that the memory footprint is low. If you run into a warning like this, try to optimize your program! There are many resources online which give helpful tips on optimization, and you can always reach out to your IA to get more information. 
+
+\subsection{Libraries}
+\subsubsection{ArduinoJson}
+\subsubsection{Nanopb}
+
+
