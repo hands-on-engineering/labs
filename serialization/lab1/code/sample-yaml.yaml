@@ -1,0 +1,13 @@
+json:
+  - rigid
+  - better for data interchange
+yaml:
+  - slim and flexible
+  - better for configuration
+object:
+	key: value
+  array:
+    - null_value:
+    - boolean: true
+    - integer: 1
+
