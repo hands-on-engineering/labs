@@ -1,7 +1,7 @@
-In the next labs we will focus on importing and using two serialization frameworks on an Arduino Nano. We will pipe our stream output into a file using the OpenLog, and will later access this file on our computers and deserialize the written data. Here, we will investigate what factors must be considered when working on a microcontroller. 
+In the next labs will we implement two different serialization frameworks on our Arduino Nanos. We will use these frameworks to serailize data into a file using OpenLog. Here, we will investigate what factors must be considered when working on a microcontroller. 
 
 \subsection{Constraints}
-An Arduino Nano has 32 KB of flash memory, of which 2 KB are used by the bootloader \cite{arduino_nano_specs}. There are a maximum of 30720 bytes left for your program.  It's important to realize that going past $\approx 70$\% of the allocated memory will lead to a warning stating \texttt{Low memory available, stability problems may occur}. 
+An Arduino Nano has 32KB of storage, meaning the programs you write cannot be larger than 30KB, as 2KB of this are taken up by a program called a bootloader, which is what allows you to program your device \cite{arduino_nano_specs}. Please note that going past $\approx 70$\% of the allocated memory will lead to a warning stating \texttt{Low memory available, stability problems may occur}. 
 
 We will try to be careful when choosing a library so that the memory footprint is low. If you run into a warning like this, try to optimize your program! There are many resources online which give helpful tips on optimization, and you can always reach out to your IA to get more information. 
 
@@ -9,13 +9,22 @@ We will try to be careful when choosing a library so that the memory footprint i
 In the following labs we will be writing our serialized streams to OpenLog. We will use files on the OpenLog as our medium for persistent data storage. If you are unfamiliar with the OpenLog, please review Lab 3:  Writing and Plotting Data and the \href{https://www.youtube.com/watch?v=FhgAi-ju6Z4}{corresponding YouTube video}.
 
 \subsection{Libraries}
-The general procedure for using serialization for data collection with a microcontroller is to create an intermediate structure or object to hold the data values you would like to record. You would serialize these structures once populated with data, and ideally save them to some kind of permanent storage (like an SD card). 
-
-The following libraries both have their own set of pros and cons. Json inherently lacks a well-defined schema for encoding or decoding; this issue becomes magnified when working with multiple developers across multiple platforms. On the other hand, nanopb is more of a hassle to install correctly and Protobuf wasn't designed to save messages in a continuous stream.
+Our weather balloon payload will have lots of sensors constantly collecting data. In order to use what we've learned in this lab to organize our data, we create an object to store sensor readings, and then serialize that object to our file.
 
 \subsubsection{ArduinoJson}
-The \href{https://arduinojson.org/}{ArduinoJson} library prides itself on being an efficient way to handle JSON in ArduinoC (actually, it is compatible with any C++ project). It is primarily used to decode the output from web APIs like that of Twitter, popular weather services, etc. We can still use it for our purposes by constructing a JSON document, populating it with data measurements, and then serializing it to an SD card. 
+The \href{https://arduinojson.org/}{ArduinoJson} library prides itself on being an efficient way to handle JSON in ArduinoC. It is primarily used to decode the output from web APIs like that of Twitter, popular weather services, etc. We can still use it for our purposes by constructing a JSON document, populating it with data measurements, and then serializing it to an SD card. 
 
 \subsubsection{Nanopb}
 The \href{https://github.com/nanopb/nanopb}{Nanopb} is a Protobuf library that also prides itself on being efficient, and was written specifically for embedded systems with restricted memory. It comes with a Protobuf Message encoder and decoder, allowing us to easily create data measurement messages and serialize those to our SD card.
 
+\subsection{Comparison of libraries}
+\begin{table}[h]
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{@{}cll@{}}
+\toprule
+\multicolumn{1}{l}{}        & \multicolumn{1}{c}{\textbf{Pros}}                                              & \multicolumn{1}{c}{\textbf{Cons}}      \\ \midrule
+\textbf{ArduinoJson / JSON} & \begin{tabular}[c]{@{}l@{}}Lightweight\\ \\ Easy to install\end{tabular}       & Data types aren't enforced by a schema \\
+\textbf{Nanopb / Protobuf}  & \begin{tabular}[c]{@{}l@{}}Lightweight \\ Well defined data types\end{tabular} & Tedious to install                     \\ \bottomrule
+\end{tabular}%
+}
+\end{table}
