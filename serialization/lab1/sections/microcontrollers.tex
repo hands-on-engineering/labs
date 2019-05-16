@@ -3,13 +3,13 @@ In the next labs will we implement two different serialization frameworks on our
 \subsection{Constraints}
 An Arduino Nano has 32KB of storage, meaning the programs you write cannot be larger than 30KB, as 2KB of this are taken up by a program called a bootloader, which is what allows you to program your device \cite{arduino_nano_specs}. Please note that going past $\approx 70$\% of the allocated memory will lead to a warning stating \texttt{Low memory available, stability problems may occur}. 
 
-We will try to be careful when choosing a library so that the memory footprint is low. If you run into a warning like this, try to optimize your program! There are many resources online which give helpful tips on optimization, and you can always reach out to your IA to get more information. 
+We will try to be careful when choosing a library so that the memory footprint is low. If you run into a warning like this, try to optimize your program! There are many resources online which give helpful tips on optimizing C programs.  
 
 \subsection{OpenLog}
 In the following labs we will be writing our serialized streams to OpenLog. We will use files on the OpenLog as our medium for persistent data storage. If you are unfamiliar with the OpenLog, please review Lab 3:  Writing and Plotting Data and the \href{https://www.youtube.com/watch?v=FhgAi-ju6Z4}{corresponding YouTube video}.
 
 \subsection{Libraries}
-Our weather balloon payload will have lots of sensors constantly collecting data. In order to use what we've learned in this lab to organize our data, we create an object to store sensor readings, and then serialize that object to our file.
+Many projects using microcontrollers—for instance a high altitude weather balloon payload or an automated gardening system—often have lots of sensors constantly collecting data. In order to use what we've learned in this lab to organize our data, we create an object to store sensor readings, and then serialize that object to our file. 
 
 \subsubsection{ArduinoJson}
 The \href{https://arduinojson.org/}{ArduinoJson} library prides itself on being an efficient way to handle JSON in ArduinoC. It is primarily used to decode the output from web APIs like that of Twitter, popular weather services, etc. We can still use it for our purposes by constructing a JSON document, populating it with data measurements, and then serializing it to an SD card. 
