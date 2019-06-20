@@ -1,5 +1,4 @@
 class Datapoint
-  attr_reader :sensor_reading 
   def initialize(value)
     @sensor_reading = value
   end
