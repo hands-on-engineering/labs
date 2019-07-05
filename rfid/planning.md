@@ -16,7 +16,7 @@ similar in purpose to UART and I2C.
 Since we've focused on I2C in previous tutorials, let's discuss some differences
 between the communications protocols:
 
-- I2C allows for multiple masters and slaves, SPI does not
+- I2C allows for multiple masters, SPI does not
 - Due to its simplicity, SPI is typically much much faster
     * I2C is typically 100 kbps, 400 kbps, or 3.4 Mbps
     * SPI does not have a maximum and is typically between 10 Mbps to 20 Mbps
@@ -76,8 +76,102 @@ select line high.
 
 ## How RFID Works
 
+Radio Frequency IDentification technology is what allows seemingly
+magical technology like Apple Pay to function. It has many uses across
+industries, such as animal tracking; store security; and university 
+card identification (MCards!).
+
+While there are a plethora of RFID communication protocols, the basic 
+physics remains the same. 
+
+There are two big picture components: tags and readers. Tags are 
+what get embedded into ID cards or animals, and readers can identify 
+these tags.
+
+
 Passive RFID basics: http://ftp.it.murdoch.edu.au/units/ICT219/Papers%20for%20transfer/Passive%20RFID%20Basics.pdf
 
-### Readers
-
 ### Tags
+
+There are two types of tags: passive and active. Passive tags gain their
+power from the reader using some clever manipulation of electromagnetic
+waves, while active tags have a battery as their power source.
+
+The main difference is that passive tags are cheaper at the trade-off
+of operating at shorter distances. We will be focusing on passive tags
+in this lab, as that is what is used most commonly in our daily lives.
+
+#### Passive Tag
+
+The reader is the power source for an RFID tag. The reader constantly 
+transmits energy to an antenna which creates electromagnetic waves that
+permeate the space around it.
+
+A tag contains a small coil, and when the magnetic wave of the reader
+passes through the area of the coil it produces a changing magnetic flux,
+which induces a current in the tag's coil.
+This current is used to power a small integrated circuit (IC) embedded 
+within the tag.
+
+The IC interacts with a small memory chip which is also
+embedded in the tag. Once the tag has determined what it wants to 
+send back to the reader, it must somehow relay this data to back to the
+reader.
+
+The way a tag communicates back to a reader is through _backscatter_.
+When the reader first emitted a signal, it was done by powering the
+reader's antenna. Now that the tag's antenna also has current through it,
+it will also emit a weaker but detectable signal back to the reader.
+
+The tag's IC can affect the backscatter signal by changing the voltage
+drop across the tag's coil. It does this by switching on and off a load
+across the circuit. These on and off signals affect the backscattered wave
+and can be detected by the reader. These fluctuations in the backscattered
+wave are interpreted as 1s and 0s.
+
+## ISO/IEC 1444
+### PCD standard 
+### PICC standard 
+#### Type A vs Type B
+
+## MFRC522
+
+The MFRC522 is a contactless reader/writer created by NXP Semiconductors. 
+It supports various MIFARE variants, which is NXP's brand of smartcard
+solutions.
+
+### What is MIFARE? What is the difference with RFID?
+
+Both RFID and MIFARE technology are radio frequency based systems that
+can be used for identification purposes; however, MIFARE technology
+was created with much more than basic identification systems in mind.
+
+MIFARE smartcards typically have a secure memory unit within the chip 
+that can store much more information than typical RFID solutions. 
+Additionally, the MFRC522 is compliant with the first 3 parts of the 
+ISO/IEC 14443 (the international standard for proximity cards).
+
+Since the sensor and cards are so cheap, we can easily learn everything
+about RFID but also take it a step further and understand how practical
+implementations in hotels, stadiums, etc. are able to securely store
+data on these cards.
+
+### Sensor notable features
+#### FIFO Buffer
+
+### Sensor setup
+#### Communication
+#### Get sensor version
+#### Implement ability to soft reset
+#### Control antennas
+
+### Important register descriptions and how to use them 
+#### CommandReg 
+#### ComIrqReg
+#### ErrorReg
+#### FIFO Registers
+
+### Executing commands
+#### Tranceive
+
+### Communicating with a PICC
