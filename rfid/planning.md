@@ -130,9 +130,26 @@ and can be detected by the reader. These fluctuations in the backscattered
 wave are interpreted as 1s and 0s.
 
 ## ISO/IEC 1444
-### PCD standard 
-### PICC standard 
+
+The standard defines two important terms: 
+
+- PICC: Proximity Integrated Circuit Card (the actual smart card)
+- PCD: Proximity Coupling Device (the card reader)
+
+
+At a high level, the PCD creates an energizing field and constantly is polling for PICCs. It does this by sending out a command frame which can be either REQA (Request for Type A card) or a WUPA (Wake Up Type A card). When a PICC enters the energizing field, it should respond to either of these commands with an ATQA command frame (Answer to Request Type A). 
+
+PICCs essentially are state machines. They are `IDLE` prior to any functioning, and then switch to different `READY` states based off of what commands they receive from a PCD.
+
 #### Type A vs Type B
+
+This difference is not very relevant anymore because of advances in technology. In general, the difference is historical. 
+
+Type A was created first by Mikron (later purchased by NXP). This implementation was memory card only without a microprocessor. Type A at the time couldn't provide continuous power to a Type A PICC with a microprocessor. Another company managed to do this, and it became known as Type B in the ISO/IEC. Now you can have either memory or microprocessor as either Type A or Type B, hence the difference isn't very important anymore.
+
+There are small differences though in ASK modulation settings and bit rate speeds, so care must be taken when impementing the chosen type. We will focus on Type A in this lab.
+
+[Source](https://electronics.stackexchange.com/questions/222055/why-are-there-types-a-and-b-in-iso-14443).
 
 ## MFRC522
 
@@ -158,12 +175,38 @@ data on these cards.
 
 ### Sensor notable features
 #### FIFO Buffer
+The sensor has a 64 byte First In First Out (FIFO) buffer. This is used as IO between the Arduino and the sensor's internal processes. 
+
+Using the FIFO registers, we can flush the buffer or access information about it.
+
+#### Timer Unit
+The sensor has a timer unit meant for the Arduino to manage tasks. The timer does not affect anything within the sensor itself. Our code takes advantage of the timer to determine how long has elapsed after the sensor has finished receiving data; we use this to create a timeout for when PICCs have to respond by.
 
 ### Sensor setup
-#### Communication
+#### Communicating with registers
+The MFRC522 uses the most common command format used with SPI. It is described in the datasheet, but any SPI tutorial will cover the basic communication.
+
+Some important notes about communication through SPI:
+
+- The sensor requires Most Significant Bit first format (MSBFirst)
+- The LSB of addresses is always logic 0
+    * **Important:** This means that the datasheet gives addresses that actually have to fit within bits 6 to 1 in a byte, so we have to shift the address bytes over by 1 bit to the left
+- The MSB of addresses determines whether we are reading (1) or writing (0)
+
 #### Get sensor version
-#### Implement ability to soft reset
+Once we have implemented basic communication with the sensor, let's make sure we've done it right by getting the version.
+
+Read from the VersionReg (0x37h) and see what you get. If you get `91h` or `92h`, you have successfully set up reading registers! The 9 stands for NXP chipset, and the second digit is the version number (v1 or v2).
+
+#### Implement soft reset
+Changes we make to our code won't be reflected by simply uploading new code to the Arduino. The registers won't be reset unless we either fully remove power and restart the sensor, or if we issue a reset command.
+
+To issue a soft reset command, write to the CommandReg (0x01h) the SoftReset command code (00001111b). Add a delay to account for how long it takes for the oscillator to start up (150 ms should be enough).
+
 #### Control antennas
+After a soft reset, the MFRC522 disables its transmitting antennas. Let's turn them back on by writing to the TxControlReg (0x14h). The first 6 bits of this register store settings, while only the last two control whether antennas are on (there are 2 antennas).
+
+To make sure we only flip on the last two bits, we should implement a function to set or clear bit masks. 
 
 ### Important register descriptions and how to use them 
 #### CommandReg 
@@ -172,6 +215,6 @@ data on these cards.
 #### FIFO Registers
 
 ### Executing commands
-#### Tranceive
+#### Transceive
 
 ### Communicating with a PICC
