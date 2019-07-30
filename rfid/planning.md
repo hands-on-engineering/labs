@@ -192,6 +192,10 @@ Some important notes about communication through SPI:
 - The LSB of addresses is always logic 0
     * **Important:** This means that the datasheet gives addresses that actually have to fit within bits 6 to 1 in a byte, so we have to shift the address bytes over by 1 bit to the left
 - The MSB of addresses determines whether we are reading (1) or writing (0)
+- MFRC522 8.1.2.1 and 8.1.2.2 gives us more details on SPI read/write
+    * Regarding reading: We should send out n addresses, and start reading after our first
+    send command. We should discard the data that comes out of MISO when writing the first
+    byte. To end reading, we should send `0x00`.
 
 #### Get sensor version
 Once we have implemented basic communication with the sensor, let's make sure we've done it right by getting the version.
@@ -208,11 +212,44 @@ After a soft reset, the MFRC522 disables its transmitting antennas. Let's turn t
 
 To make sure we only flip on the last two bits, we should implement a function to set or clear bit masks. 
 
+#### Various register settings
+Before we proceed to try and implement some commands in the ISO/IEC, we should adjust a few settings to make sure the sensor will behave as we expect.
+
+- Timer Unit
+    * Enable TAuto = 1 for the TModeReg
+        * This will instruct the timer to automatically start a countdown every time we finish transmitting some data
+    * Set TPrescalerReg = `0xA9`, TReloadRegH = `0x03`, TReloadRegL = `0xE8`
+        * This will instruct the timer to be a countdown of 25 milliseconds
+        * We calculated these register values from the datasheet's equation (5); see the below section on the Timer Unit for an explanation of this equation
+    * Set TxASKReg to use 100% ASK modulation
+        * If you search online, you will find that Type A interfacing uses 100% ASK modulation
+    * Set ModeReg = `0x3D`
+        * ISO/IEC 14443-3 6.1.6 states that the initial value of the CRC coprocessor should be `6363` for Type A interfacing. This value of the register switches the last 2 bits to `01` causing it to set the CRC coprocessor register value correctly.
+
 ### Important register descriptions and how to use them 
 #### CommandReg 
+We can write commands to this register and have them execute. The datasheet describes how these commands are used.
+
+Some commands, like `Transceive`, need data to work with. We can provide this data by passing it into the FIFO buffer.
+
+Some commands terminate themselves, others require specifically being directed to end. These are described in the subsections of MFRC522 10.3.1. The default state of the device is Idle and the command `Idle` will place the device in this state.
+
 #### ComIrqReg
+Unfortunately, the device's IRQ pin isn't physically wired to anything. Because of this, we can't create cleaner event-driven code.
+
+However, this doesn't stop us from polling the IRQ register and detecting when certain events happen. This register has 8 irq flags that we can use to detect when important events happen.
+
+These events tend to be things like the timer unit finishing its countdown, data transmission ending, and more. 
+
 #### ErrorReg
+The error register can be used in the same way as we use the ComIrqReg: polling for events.
+
+By polling the ErrorRegister, we can detect when we have things like a Buffer Overflow or a collision.
+
 #### FIFO Registers
+- FIFODataReg: this register lets us read and write from a 64 byte buffer
+    * We use this for storing the commands that we want to broadcast using the device antennas. We can create a byte buffer in our code, create a command frame, and then copy this command frame into the physical FIFO buffer.
+- FIFOLevelReg: reading this register will return how many bytes are currently in the register
 
 ### Executing commands
 #### Transceive
