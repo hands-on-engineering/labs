@@ -83,7 +83,7 @@ COMMUNICATION EXAMPLE*
 The specifics of when data is sampled over the lines depends on what SPI
 mode we're using. SPI modes are made up of combinations controlling the
 clock polarity (CPOL) and clock phase (CPHA). What this means is that we
-need to choose which whether the clock idles/starts low or high, and
+need to choose whether the clock idles/starts low or high, and
 whether data is sampled on the falling or rising edge of the clock.  Since
 we have 2 settings with 2 options each, we have a total of 4 SPI modes.
 *SHOW TABLE OF MODES*.
