@@ -33,11 +33,11 @@ hardware, with certain pins dedicated to be MOSI/MISO/SCK/SS
 - Can use other pins with bit banging, but we won't cover this
 
 ### Comparison to other Serial communication protocols
-|      | Pins Needed | Speeds                                                   | Distance |
-|------|-------------|----------------------------------------------------------|----------|
-| UART | 2           | 115.2 kbps                                               | 10+ m    |
-| SPI  | 4           | 4 Mbps as slave, 8 Mbps as master                        | ~0.25 m  |
-| I2C  | 2           | Typically 0.4 Mbps, some processors can support 3.4 Mbps | ~1 m     |
+|      | Pins Needed | Speeds                                                   | Distance | Scalability by # of devices |
+|------|-------------|----------------------------------------------------------|----------|-----------------------------|
+| UART | 2           | 115.2 kbps                                               | 10+ m    | Worst                       |
+| SPI  | 4           | 4 Mbps as slave, 8 Mbps as master                        | ~0.25 m  | Better                      |
+| I2C  | 2           | Typically 0.4 Mbps, some processors can support 3.4 Mbps | ~1 m     | Best                        |
 
 ## Transcript
 
