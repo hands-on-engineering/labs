@@ -16,6 +16,14 @@ a comprehensive understanding of interface communications.
 - MISO, MOSI, SCK, SS
 - Multiple slaves: individual SS lines or daisy chaining
 - SPI Mode: polarity and clock phase
+
+| Mode | CPOL | CPHA | Description                                                      |
+|------|------|------|------------------------------------------------------------------|
+| 0    | 0    | 0    | Data is sampled at rising edges and shifted out on falling edges |
+| 1    | 0    | 1    | Data is sampled at falling edges and shifted out on rising edges |
+| 2    | 1    | 0    | Data is sampled at falling edges and shifted out on rising edges |
+| 3    | 1    | 1    | Data is sampled at rising edges and shifted out on falling edges |
+
 - Timing
     * SS low 
     * SCK indicates sampling
