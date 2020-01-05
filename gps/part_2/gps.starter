@@ -1,0 +1,87 @@
+#include <SoftwareSerial.h>
+
+// TASK 1: Implement your code for Task 1 here
+char GPSDataBuffer[GPS_DATA_BUFFER_SIZE] = {0x00};
+
+void setup() {
+  // Set up baud rates for SoftwareSerial ports
+  logger.begin(115200);
+  GPS.begin(9600);
+
+  // Only listen to what's coming in from GPS
+  // This will discard any data sent by the logger
+  GPS.listen();
+}
+
+/*
+ * Sets every value in the buffer to \0 and resets the buffer index to 0
+ */
+void reset_GPSDataBuffer_and_index() {
+// TASK 2: Implement your code for Task 2 here
+}
+
+/*
+ * REQUIRES: nothing
+ * MODIFIES: nothing
+ * EFFECTS: returns a pointer to a character ('$') inside of the GPSDataBuffer
+ * (the beginning of the GPGGA string)
+ */
+char* ptr_to_first_gpgga() {
+// TASK 3a: Implement your code for method 1 of Task 3 here
+}
+
+/*
+ * REQUIRES: a pointer, gpgga, to the '$' of a GPGGA string
+ * MODIFIES: nothing
+ * EFFECTS: returns -1 if the gpgga pointer is null, otherwise returns the
+ * distance from the beginning of the GPSDataBuffer to the '$'
+ */
+int distance_to_first_gpgga(const char* gpgga) {
+// TASK 3b: Implement your code for method 2 of Task 3 here
+}
+
+/*
+ * REQUIRES: a pointer, gpgga, to the '$' of a GPGGA string
+ * MODIFIES: nothing
+ * EFFECTS: returns -1 if the gpgga pointer is null or if no newline is found
+ * after the GPGGA string, otherwise returns the distance from the beginning of
+ * the GPSDataBuffer to the first newline following the GPGGA string
+ */
+int distance_to_first_newline_after_gpgga(const char* gpgga) {
+// TASK 3c: Implement your code for method 3 of Task 3 here
+}
+
+
+
+void loop() { 
+  // BEGIN RX ONLY
+  GPS.begin(9600);
+  GPS.listen();
+
+  // This loop will hang for enough time to fill our GPS buffer
+  //    We assume that the buffer can be read at ~1 Hz
+  long startTime = millis();  
+  // TASK 4: Replace the XXX in the below while loop (and inside the while loop)
+  // with your code for Task 4 
+  while( (XXX < startTime + GPS_DATA_BUFFER_SIZE + 2) && (GPSDataBufferIndex !=
+GPS_DATA_BUFFER_SIZE - 1)) { 
+    if(GPS.available()) {
+      GPSDataBuffer[GPSDataBufferIndex] = XXX;
+      GPSDataBufferIndex++;
+    }
+  }
+ 
+  GPS.end();
+  // END RX ONLY
+
+  // BEGIN TX ONLY
+  char* gpgga = ptr_to_first_gpgga();
+  int dist_to_gpgga = distance_to_first_gpgga(gpgga);
+
+  if(dist_to_gpgga != -1) { // if we found a $GPGGA string
+  // TASK 5: Implement your code for Task 5 here
+  }
+  // END TX ONLY
+  
+  reset_GPSDataBuffer_and_index();  
+}
