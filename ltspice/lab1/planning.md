@@ -204,17 +204,22 @@ video](https://www.khanacademy.org/science/electrical-engineering/ee-circuit-ana
 showing an example of how we label voltages.
 
 #### Application of Fundamental Laws 1
-Using KVL, KCL, and Ohm's Law, solve for v1, v2, v3, i1,  i2, and i3 in the circuit
-below. 
-
-<img src="./hw2_1.png" width="250" />
-
-#### Application of Fundamental Laws 2
 
 Using KVL, KCL and Ohm's Law solve for all unknown currents and voltages in this
 circuit. 
 
 <img src="./khan_task.svg" width="250" />
+
+
+#### Bonus Problem: Application of Fundamental Laws 2
+
+*This problem is not required for completion of this lab because it contains two
+voltage sources. You should still give it a try if you have time!*
+
+Using KVL, KCL, and Ohm's Law, solve for v1, v2, v3, i1,  i2, and i3 in the circuit
+below. 
+
+<img src="./hw2_1.png" width="250" />
 
 
 #### Nodal Analysis
@@ -418,9 +423,6 @@ Take a screenshot of your waveform window for submission.
 
 ### What to submit for this lab
 1. Your solution to "Application of Fundamental Laws 1"
-  * Include all equations and any diagrams you drew to solve this problem (if
-    any)
-2. Your solution to "Application of Fundamental Laws 2"
   * Include all equations and any diagrams you drew to solve this problem (if
     any)
 3. Your solution to "Application of Nodal Analysis"
