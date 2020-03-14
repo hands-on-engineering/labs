@@ -224,12 +224,14 @@ below.
 
 #### Nodal Analysis
 
-Using KVL and KCL can get you far, but it would be nice to have a codified set
-of steps to solve for all voltages and currents in a circuit.
+It would be nice to have a codified set of steps to solve for all voltages and currents in a circuit.
 
 If you have taken physics in high school or Physics 240, you know that it can be
 frustrating to throw KVL/KCL mindlessly at a circuit and hope to get a set of
 linearly independent equations to solve the circuit problem at hand.
+
+The Node Voltage Method is an organized and efficient way of approaching any circuit and is
+based off of Kirchoff's Current Law.
 
 The goal of the method we present is a way to mindlessly solve a circuit. 
 
