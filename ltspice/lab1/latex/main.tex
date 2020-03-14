@@ -1,0 +1,75 @@
+\documentclass{article}
+
+\usepackage[americanvoltages,siunitx]{circuitikz}
+\usepackage{ifthen}
+
+\makeatletter
+  \def\pgf@circ@drawvoltagegenerator{
+    \ifpgf@circuit@bipole@voltage@below
+        coordinate (pgfcirc@Vcont1) at ($(\ctikzvalof{bipole/name}.center) ! \ctikzvalof{voltage/bump a} ! (\ctikzvalof{bipole/name}.-120)$)
+        coordinate (pgfcirc@Vcont2) at ($(\ctikzvalof{bipole/name}.center) ! \ctikzvalof{voltage/bump a} ! (\ctikzvalof{bipole/name}.-60)$)
+    \else
+        coordinate (pgfcirc@Vcont1) at ($ (\ctikzvalof{bipole/name}.center) ! \ctikzvalof{voltage/bump a} ! (\ctikzvalof{bipole/name}.120)$)
+        coordinate (pgfcirc@Vcont2) at ($ (\ctikzvalof{bipole/name}.center) ! \ctikzvalof{voltage/bump a} ! (\ctikzvalof{bipole/name}.60)$)
+    \fi
+
+    \ifpgf@circuit@europeanvoltage
+        \ifpgf@circuit@bipole@voltage@backward
+            (pgfcirc@Vcont2)  -- node[currarrow, sloped,  allow upside down, pos=1] {} (pgfcirc@Vcont1)
+        \else
+            (pgfcirc@Vcont1)  -- node[currarrow, sloped,  allow upside down, pos=1] {} (pgfcirc@Vcont2)
+        \fi
+
+    \else % american voltage
+
+        \pgfextra{
+            \edef\pgf@temp{\pgfkeysvalueof{/tikz/circuitikz/bipole/kind}}
+            \def\pgf@circ@temp{battery}
+            \ifx\pgf@temp\pgf@circ@temp
+                \def\pgf@circ@batteria{battery}
+            \else
+                \edef\pgf@circ@temp{battery1}
+                \ifx\pgf@temp\pgf@circ@temp
+                    \edef\pgf@circ@batteria{battery}
+                \else
+                    \edef\pgf@circ@batteria{false}
+                \fi
+            \fi
+            \def\pgf@circ@temp{battery1}
+        }
+
+        \ifx\pgf@temp\pgf@circ@temp % if it is a battery, must put + and -
+            \ifpgf@circuit@bipole@voltage@backward
+                (pgfcirc@Vcont2)  node[xshift=2pt,yshift=-6pt] {$-$}  (pgfcirc@Vcont1) node[xshift=-2pt,yshift=-6pt] {$+$}
+            \else
+                (pgfcirc@Vcont1)  node[xshift=-2pt,yshift=-6pt] {$-$}  (pgfcirc@Vcont2) node[xshift=2pt,yshift=-6pt] {$+$}
+            \fi
+        \fi
+
+    \fi
+}
+\makeatother
+
+\begin{document}
+  
+\begin{circuitikz} \draw
+(0,0) to[battery1, v=\SI{8}{\volt}, i=$i_v$] (0,4)
+      to (4,4)
+(4,4) to[resistor, l=2<\kilo\ohm>] (4,0)
+      to (0,0)
+(4,4) to (8,4)
+(8,4) to[resistor, l=4<\kilo\ohm>] (8,0)
+      to (0,0)
+;
+\end{circuitikz}
+
+\begin{circuitikz} \draw
+(0,0) to[battery1,v=\SI{12}{\volt}] (0,4)
+      to[resistor, l_=\SI{1}{\kilo\ohm}] (4,4)
+      to (4,2)
+      circle[radius=1pt] node[label={right:$V_{out}$}] {}
+      to (4,0)
+      to[resistor, l=\SI{3}{\kilo\ohm}] (0,0)
+;
+\end{circuitikz}
+\end{document}

@@ -203,6 +203,20 @@ Here is [a
 video](https://www.khanacademy.org/science/electrical-engineering/ee-circuit-analysis-topic/ee-dc-circuit-analysis/v/ee-labeling-voltages)
 showing an example of how we label voltages.
 
+#### Application of Fundamental Laws 1
+Using KVL, KCL, and Ohm's Law, solve for v1, v2, v3, i1,  i2, and i3 in the circuit
+below. 
+
+<img src="./hw2_1.png" width="250" />
+
+#### Application of Fundamental Laws 2
+
+Using KVL, KCL and Ohm's Law solve for all unknown currents and voltages in this
+circuit. 
+
+<img src="./khan_task.svg" width="250" />
+
+
 #### Nodal Analysis
 
 Using KVL and KCL can get you far, but it would be nice to have a codified set
@@ -229,20 +243,53 @@ Please watch [this
 video](https://www.khanacademy.org/science/electrical-engineering/ee-circuit-analysis-topic/ee-dc-circuit-analysis/v/ee-node-voltage-method-steps-1-to-4) for a good overview of the process. The video
 uses a slightly different set of steps that perform the same tasks.
 
-#### Application of Fundamental Laws 1
-Using KVL, KCL, and Ohm's Law, solve for v1, v2, v3, i1,  i2, and i3 in the circuit
-below. Do not directly apply Nodal Analysis (though many elements of your
-calculation would wind up similar).
+#### Example of Nodal Analysis: Battery with 2 Parallel Resistors
 
-<img src="./hw2_1.png" width="250" />
+<img src="./custom_1.png" width="250" />
 
-#### Application of Fundamental Laws 2
+Let us perform the steps listed:
+1. There are 2 nodes in this circuit (above and below the battery). 
+    * Note that even though there are 3 branches, all the top wires of the branches connect into a common wire with no circuit elements between them, thus they are part of
+the same node (the positive terminal of our battery). Similarly, all the bottom
+wires of the branches connect into one wire and form the second node (the
+negative terminal of the battery).
+    * Let's call the bottom node $V_0$ and the top node $V_1$.
+2. Let's just choose the bottom node to be ground (thus the negative terminal of
+   the battery is at 0V).
+3. There is one non reference node. Let's write KCL for it!
+    * $$i_v + \frac{V_1}{2 \text{kΩ}} + \frac{V_1}{4 \text{kΩ}} = 0$$
+4. Let's generate a KVL expression for our one voltage source.
+    * $$V_1 - 0 \text{V} = 8 \text{V}$$
+5. We can now solve for $V_1$ and $i_v$! Plugging in and solving our system
+   yields $V_1 = 8 \text{V}$ (somewhat obviously) and $i_v = 6 \text{A}$
 
-Using KVL, KCL and Ohm's Law solve for all unknown currents and voltages in this
-circuit. Do not directly apply Nodal Analysis (though many elements of your
-calculation would wind up similar).
+#### Example of Nodal Analysis: Voltage Divider
 
-<img src="./khan_task.svg" width="250" />
+<img src="./custom_2.png" width="250" />
+
+You have already explored voltage dividers in lab! To refresh your memory, here
+is the formula for a voltage divider with 2 resistors: $V_{out} = \frac{R_2}{R_1 + R_2}$.
+
+Using this formula, we can see from the diagram that we expect $V_{out} = \frac{3}{4} * 12 \text{V} = 9 \text{V}$. 
+
+
+Let's use nodal analysis to verify this result! Note that by not labeling
+"obvious" nodes (like ones with only a battery separating them from ground), we
+can sometimes reduce the number of equations we need to write.
+1. There are 3 nodes in this circuit: on either side of the battery, and $V_{out}$
+2. Let's choose the bottom terminal of the battery to be ground. The node at the
+   positive terminal of the battery is clearly 12 Volts then, so we won't bother
+labeling it, since it's already solved.
+3. There is only one unsolved non-reference node: $V_{out}$. Let's write a KCL
+   expression for it!
+  * $$\frac{V_{out} - 12 \text{V}}{1 kΩ} + \frac{V_{out} - 0 \text{V}}{3 kΩ} = 0$$
+4. Since we didn't bother to label the node above the voltage source and just
+   directly solved for it, we do not need to write a KVL expression for the
+voltage source. 
+5. We can now solve for $V_{out}$ to obtain that $V_{out} = 9 \text{V}$, just as
+   expected!
+
+
 
 #### Application of Nodal Analysis
 
