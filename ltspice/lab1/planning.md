@@ -129,7 +129,9 @@ is relative to ground (node b).
 
 #### The resistor
 
-A resistor is a device which impedes current. A resistor is an excellent example
+A resistor is a device which impedes current. It _always_ drops voltage.
+
+A resistor is an excellent example
 of an almost perfect "Ohmic" device. An ohmic device is one which follows Ohm's
 Law, `V = IR`, at least for some particular range of current (called the linear
 region).
