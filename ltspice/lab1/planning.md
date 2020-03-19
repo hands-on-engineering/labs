@@ -4,8 +4,6 @@
 
 1. You will be able to analyze a basic circuit (one without energy storage elements
    or dependent sources) by hand using Kirchoff's Laws and Nodal Analysis
-2. You will be able to construct basic circuits using LTSpice software
-3. You will be able to analyze the result of LTSpice of simulations
 
 ## Learning Assessments
 
@@ -14,15 +12,9 @@
 - Do Kirchoff's laws apply to non-ohmic devices?
 - Give a brief description of what nodal analysis is
 - What are the main steps to performing nodal analysis?
-- How does the SPICE engine programmatically analyze circuits?
-- What is a ballast resistor?
-- What SPICE directive do we use to perform a DC operating point simulation?
-- Simulate a basic battery, lamp, and resistor in series using LTSpice, and
-   retrieve the operating point analysis results.
-- Why is SPICE useful in analyzing circuits with elements like diodes?
 
 ## Lab Assignment
-Estimated completion time: ~1.5 hours +- 30 minutes. The variation depends
+Estimated completion time: ~0.5 hours +- 30 minutes. The variation depends
 heavily on skill level coming in, and the majority of time is expected to be
 reading the material in this lab and grasping concepts.
 
@@ -36,12 +28,6 @@ everything correctly!!**
 1. You will solve a basic problem set of circuit analysis by hand. These
    problems are designed to be simple and do not have any "tricks" (30-45
 minutes).
-2. You will simulate two circuits: a basic circuit with only devices which
-   follow Ohm's law, and another circuit with a non-linear device. You will then
-analyze this circuit and discuss the results. (30-60 minutes).
-3. You will set up a call with an IA to discuss your work in this lab (5-10
-   minute call which may involve answering some basic conceptual questions, and
-going over your submission).
 
 ## Content
 ### Introduction
@@ -52,16 +38,17 @@ circuits.
 
 The goal of this lab is to allow you to explore these concepts further to expose you to some of the basics of Electrical Engineering.
 
+This lab is split into two parts. Here you will build the foundation required to
+understand what's going on under the hood in LTSpice. In lab 2, you will get to
+actually play with LTSpice.
+
 Many of the concepts we cover here are a preview of what you might learn in a
 course like EECS 215. If you enjoy this lab and the concepts of it, please
 consider taking the course!
 
 If you find these concepts easy, consider completing the advanced version of
-this lab written by Sarah. Many of you asked about our liberal usage of
-capacitors in the circuits you've designed, particularly around LDOs. In that
-lab, you will design filters using capacitors and explore basic first order
-circuits; hopefully, this gives some intuition around how we can exploit energy
-storage elements to stabilize our circuits.
+this lab written by Sarah. In that lab, you get to explore basic first order
+circuits.
 
 
 ### Credits
@@ -82,7 +69,8 @@ helpful reference if you need a more detailed primer than we provide here.
 ### Disclaimer
 
 This lab glosses over topics I believe were not relevant to being able to
-complete the end goal of simulation with SPICE. A partial list of some topics
+complete the end goal of simulation with SPICE (which you will do in lab 2 if
+you choose to continue). A partial list of some topics
 that this manual hand-waves over is below, and hopefully if you enjoyed this lab
 you will go on to explore these in more depth in future classes:
 - Dependent voltage and current sources
@@ -427,18 +415,9 @@ Take a screenshot of your waveform window for submission.
 1. Your solution to "Application of Fundamental Laws 1"
   * Include all equations and any diagrams you drew to solve this problem (if
     any)
-3. Your solution to "Application of Nodal Analysis"
+2. Your solution to "Application of Nodal Analysis"
   * Include all equations and any diagrams you drew to solve this problem (if
     any)
-4. Your solution to "LTSpice Assignment 1"
-  * Include both screenshots (the schematic and operating point results)
-5. Your solution to "LTSpice Assignment 2"
-  * Include both screenshots (the modified schematic and waveform window)
-  * Include your answer to the question "What resistance value limits the
-    current to 0.3 Amps"
-6. Your solution to "LTSpice Assignment 3"
-  * Include the screenshot of your waveform window
-
 
 ### Appendix
 #### Solving simultaneous systems of equations
