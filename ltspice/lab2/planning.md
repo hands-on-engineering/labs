@@ -1,17 +1,18 @@
-# LTSpice Lab 1 by Neil Johari
+# LTSpice Lab 2 by Neil Johari
 
 ## Learning Objectives
 
-1. You will be able to analyze a basic circuit (one without energy storage elements
-   or dependent sources) by hand using Kirchoff's Laws and Nodal Analysis
+1. You will be able to construct basic circuits using LTSpice software
+2. You will be able to analyze the result of LTSpice of simulations
 
 ## Learning Assessments
 
-- What is Ohm's Law?
-- What are Kirchoff's Voltage Law and Kirchoff's Current Law?
-- Do Kirchoff's laws apply to non-ohmic devices?
-- Give a brief description of what nodal analysis is
-- What are the main steps to performing nodal analysis?
+- How does the SPICE engine programmatically analyze circuits?
+- What is a ballast resistor?
+- What SPICE directive do we use to perform a DC operating point simulation?
+- Simulate a basic battery, lamp, and resistor in series using LTSpice, and
+   retrieve the operating point analysis results.
+- Why is SPICE useful in analyzing circuits with elements like diodes?
 
 ## Lab Assignment
 Estimated completion time: ~0.5 hours +- 30 minutes. The variation depends
@@ -25,22 +26,20 @@ LTSpice screenshots proving you played with the software) than the fact that
 your answers are correct. This is a lot of work and you're not expected to do
 everything correctly!!**
 
-1. You will solve a basic problem set of circuit analysis by hand. These
-   problems are designed to be simple and do not have any "tricks" (30-45
-minutes).
+1. You will simulate two circuits: a basic circuit with only devices which
+   follow Ohm's law, and another circuit with a non-linear device. You will then
+analyze this circuit and discuss the results. (30-60 minutes).
+2. You will set up a call with an IA to discuss your work in this lab (5-10
+   minute call which may involve answering some basic conceptual questions, and
+going over your submission).
 
 ## Content
 ### Introduction
 
-In lab, you have explored some basic concepts like voltage and current.
-Additionally, you have built a voltage divider and explored some interesting
-circuits.
-
 The goal of this lab is to allow you to explore these concepts further to expose you to some of the basics of Electrical Engineering.
 
-This lab is split into two parts. Here you will build the foundation required to
-understand what's going on under the hood in LTSpice. In lab 2, you will get to
-actually play with LTSpice.
+In lab 1, we covered some concepts surrounding basic circuit analysis. In this
+lab, you will use LTSpice to simulate circuits.
 
 Many of the concepts we cover here are a preview of what you might learn in a
 course like EECS 215. If you enjoy this lab and the concepts of it, please
@@ -66,22 +65,6 @@ This book can be freely downloaded [here](http://cad.eecs.umich.edu/). It is not
 required to complete this lab or understand all the material, but may serve as a
 helpful reference if you need a more detailed primer than we provide here.
 
-### Disclaimer
-
-This lab glosses over topics I believe were not relevant to being able to
-complete the end goal of simulation with SPICE (which you will do in lab 2 if
-you choose to continue). A partial list of some topics
-that this manual hand-waves over is below, and hopefully if you enjoyed this lab
-you will go on to explore these in more depth in future classes:
-- Dependent voltage and current sources
-- Source transforms
-- Wye-Delta transforms
-- Resistance and conductance at a material level
-- Power
-- Mesh analysis
-- Supernodes
-
-
 ### Pre-requisites
 
 I assume you are familiar with the concepts of charge, current, and voltage. If
@@ -89,211 +72,8 @@ you are not, please read the "Circuits Primer" on Canvas under `Files > Labs >
 Introductory Documents > Circuits_Primer.pdf`. This is an excellent way to
 intuitively grasp voltage and how it relates to current.
 
-### Circuit Basics
-#### Terminology
-Here are some reference tables that will be useful in understanding circuit
-diagrams. Table 1-1 covers units you might encounter and their symbols, Table
-1-2 covers SI units, and Table 1-3 shows common circuit elements.
-<img src="./table_1-1.png" width="250" />
-<img src="./table_1-2.png" width="250" />
-<img src="./table_1-3.png" width="250" />
-
-
-Some important terms we will formalize:
-
-- Node: An electrical connection point that connects multiple circuit elements
-  * Note that we often draw things in a way that's easy to visualize, but really
-    anything connected by the same wire with no circuit elements in between is
-    _part of the same node_.
-- Branch: Trace between two consecutive nodes with only one element in between
-  them
-- Loop: Closed path with the same start and end node
-- Mesh: A restricted kind of loop: it is a loop that encloses no other loops
-- In series: elements that share the same current
-- In parallel: elements that share the same voltage
-
-#### Reference nodes
-
-One thing many of you struggled with during labs was understanding the
-importance of ground.
-
-The big idea is that voltage is by definition *between two points*. However, for
-convenience sometimes we like to assign a particular node to be our _ground_
-node, so that we can measure all our voltages relative to this.
-
-Say we have a circuit and we are measuring the voltage between two nodes, a and
-b. Then `V_ab = V_a - V_b`. Now let's say that we make all future measurements
-relative to node b... let us assign node b to be our reference point by calling
-it ground. Now we are allowed to simply refer to `V_a` and it is implied that it
-is relative to ground (node b).
-
-#### The resistor
-
-A resistor is a device which impedes current. A resistor is an excellent example
-of an almost perfect "Ohmic" device. An ohmic device is one which follows Ohm's
-Law, `V = IR`, at least for some particular range of current (called the linear
-region).
-
-Not all devices follow this relationship! Elements like diodes are nonlinear and
-we cannot use Ohm's law for these.
-
-#### Passive Sign Convention
-
-There are two ways to assign polarity to an element with current entering it.
-
-We will choose to assign current entering a device to be defined as entering the
-(+) side of v. We will not cover power in this lab, but this effectively means
-that any circuit elements dissipating power will have a `P > 0`, and any
-elements supplying power will have a `P < 0`.
-
-<img src="./fig_1-22.png" width="250" />
-
-### Circuit Analysis Fundamentals
-
-All circuit theory is built on a pretty small set of fundamental laws, of which
-KCL and KVL are the most important.
-
-The most interesting thing is that these laws are ALWAYS true; they are built
-upon fundamental laws of conservation of energy. This means that even if you
-have a non-ohmic device, you absolutely can still write these equations and they
-will hold.
-
-#### Kirchoff's Current Law (KCL)
-
-In an ideal circuit, a node is unable to store, generate, or dissipate electric
-charge. Thus, all current entering a node must equal all current leaving a node.
-
-In other words, the sum of all currents entering a node must equal 0.
-
-Here is a [good video on
-KCL](https://www.khanacademy.org/science/electrical-engineering/ee-circuit-analysis-topic/ee-dc-circuit-analysis/v/ee-kirchhoffs-current-law).
-
-
-#### Kirchoff's Voltage Law (KVL)
-
-The law of conservation of energy states that if electric charge is moved around
-a closed loop (where end position = start position), then the net gain or loss
-of energy must be 0.
-
-Voltage is related to potential energy, thus the algebraic sum of voltages
-around a closed loop must be 0.
-
-In terms of getting the signs right, follow these two rules and you'll get the
-right equation every time:
-1. Go around your loop in a clockwise fashion
-2. Assign a positive sign to your KVL equation if you encounter the (+) side of
-   an element first, and a negative sign if you encounter the (-) side first
-
-If you would like a video on KVL, [here is our
-recommendation](https://www.khanacademy.org/science/electrical-engineering/ee-circuit-analysis-topic/ee-dc-circuit-analysis/v/ee-kirchhoffs-voltage-law).
-
-Here is [a
-video](https://www.khanacademy.org/science/electrical-engineering/ee-circuit-analysis-topic/ee-dc-circuit-analysis/v/ee-labeling-voltages)
-showing an example of how we label voltages.
-
-#### Application of Fundamental Laws 1
-
-Using KVL, KCL and Ohm's Law solve for all unknown currents and voltages in this
-circuit. 
-
-<img src="./khan_task.svg" width="250" />
-
-
-#### Bonus Problem: Application of Fundamental Laws 2
-
-*This problem is not required for completion of this lab because it contains two
-voltage sources. You should still give it a try if you have time!*
-
-Using KVL, KCL, and Ohm's Law, solve for v1, v2, v3, i1,  i2, and i3 in the circuit
-below. 
-
-<img src="./hw2_1.png" width="250" />
-
-
-#### Nodal Analysis
-
-It would be nice to have a codified set of steps to solve for all voltages and currents in a circuit.
-
-If you have taken physics in high school or Physics 240, you know that it can be
-frustrating to throw KVL/KCL mindlessly at a circuit and hope to get a set of
-linearly independent equations to solve the circuit problem at hand.
-
-The Node Voltage Method is an organized and efficient way of approaching any circuit and is
-based off of Kirchoff's Current Law.
-
-The goal of the method we present is a way to mindlessly solve a circuit. 
-
-Steps for Nodal Analysis:
-1. Identify all nodes in the circuit
-2. Choose a ground node
-3. Generate a KCL equation for each non-reference node. An easy way to make this mindless is
-   to always form the sum of currents leaving the node (assigning a negative
-sign to any current entering the node).
-4. Generate a KVL expression for each voltage source representing the drop between 2 nodes connected  by the voltage source
-5. Solve the independent simultaneous equations using a solver program like
-   MATLAB.
-
-
-Please watch [this
-video](https://www.khanacademy.org/science/electrical-engineering/ee-circuit-analysis-topic/ee-dc-circuit-analysis/v/ee-node-voltage-method-steps-1-to-4) for a good overview of the process. The video
-uses a slightly different set of steps that perform the same tasks.
-
-#### Example of Nodal Analysis: Battery with 2 Parallel Resistors
-
-<img src="./custom_1.png" width="250" />
-
-Let us perform the steps listed:
-1. There are 2 nodes in this circuit (above and below the battery). 
-    * Note that even though there are 3 branches, all the top wires of the branches connect into a common wire with no circuit elements between them, thus they are part of
-the same node (the positive terminal of our battery). Similarly, all the bottom
-wires of the branches connect into one wire and form the second node (the
-negative terminal of the battery).
-    * Let's call the bottom node $V_0$ and the top node $V_1$.
-2. Let's just choose the bottom node to be ground (thus the negative terminal of
-   the battery is at 0V).
-3. There is one non reference node. Let's write KCL for it!
-    * $$i_v + \frac{V_1}{2 \text{kΩ}} + \frac{V_1}{4 \text{kΩ}} = 0$$
-4. Let's generate a KVL expression for our one voltage source.
-    * $$V_1 - 0 \text{V} = 8 \text{V}$$
-5. We can now solve for $V_1$ and $i_v$! Plugging in and solving our system
-   yields $V_1 = 8 \text{V}$ (somewhat obviously) and $i_v = 6 \text{A}$
-
-#### Example of Nodal Analysis: Voltage Divider
-
-<img src="./custom_2.png" width="250" />
-
-You have already explored voltage dividers in lab! To refresh your memory, here
-is the formula for a voltage divider with 2 resistors: $V_{out} = \frac{R_2}{R_1 + R_2}$.
-
-Using this formula, we can see from the diagram that we expect $V_{out} = \frac{3}{4} * 12 \text{V} = 9 \text{V}$. 
-
-
-Let's use nodal analysis to verify this result! Note that by not labeling
-"obvious" nodes (like ones with only a battery separating them from ground), we
-can sometimes reduce the number of equations we need to write.
-1. There are 3 nodes in this circuit: on either side of the battery, and $V_{out}$
-2. Let's choose the bottom terminal of the battery to be ground. The node at the
-   positive terminal of the battery is clearly 12 Volts then, so we won't bother
-labeling it, since it's already solved.
-3. There is only one unsolved non-reference node: $V_{out}$. Let's write a KCL
-   expression for it!
-  * $$\frac{V_{out} - 12 \text{V}}{1 kΩ} + \frac{V_{out} - 0 \text{V}}{3 kΩ} = 0$$
-4. Since we didn't bother to label the node above the voltage source and just
-   directly solved for it, we do not need to write a KVL expression for the
-voltage source. 
-5. We can now solve for $V_{out}$ to obtain that $V_{out} = 9 \text{V}$, just as
-   expected!
-
-
-
-#### Application of Nodal Analysis
-
-Apply nodal analysis to determine the current I in the figure below. There are
-many ways to do this. If you are struggling, watch the video linked before the
-assignments! You can use MATLAB to solve the equations if needed, though it
-should be trivial to do by hand.
-
-<img src="./e_3-1.png" width="250" />
+Additionally, I assume you're familiar with basic circuit analysis. Refer to lab
+one if you aren't familiar with circuit basics and nodal analysis.
 
 ### SPICE and LTSpice
 
@@ -412,25 +192,12 @@ voltage source. Ballast resistors help protect against this.
 Take a screenshot of your waveform window for submission.
 
 ### What to submit for this lab
-1. Your solution to "Application of Fundamental Laws 1"
-  * Include all equations and any diagrams you drew to solve this problem (if
-    any)
-2. Your solution to "Application of Nodal Analysis"
-  * Include all equations and any diagrams you drew to solve this problem (if
-    any)
-
-### Appendix
-#### Solving simultaneous systems of equations
-
-[Here is a video by Professor Fred Terry on "Essential Linear Algebra I: Solving
-Linear Equations Using Matrix
-Methods"](https://web.eecs.umich.edu/~fredty/EECS215FA15/Essential%20Linear%20Algebra%20I/Essential%20Linear%20Algebra%20I.html).
-In it, he describes the process of solving these systems using MATLAB in
-particular. Here is a [download for the MATLAB file he
-used](https://umich.instructure.com/courses/367878/files/13124151/download?wrap=1).
-
-I personally like using the Symbolic Math Toolbox in MATLAB, which lets you
-define symbols and equations much like you would on a CAS calculator. If you're
-interested, [here is the MATLAB documentation on using the `solve`
-function](https://www.mathworks.com/help/symbolic/solve-a-system-of-linear-equations.html).
+1. Your solution to "LTSpice Assignment 1"
+  * Include both screenshots (the schematic and operating point results)
+2. Your solution to "LTSpice Assignment 2"
+  * Include both screenshots (the modified schematic and waveform window)
+  * Include your answer to the question "What resistance value limits the
+    current to 0.3 Amps"
+3. Your solution to "LTSpice Assignment 3"
+  * Include the screenshot of your waveform window
 
